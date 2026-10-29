@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>威秀影城票價計算 - Python 程式邏輯挑戰</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- html2canvas for Exporting Card as Image -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- Pyodide Python Runner -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+  <!-- Prism.js for OnlineGDB Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Gowun+Dodum&family=Fira+Code:wght@400;500;600&family=Libre+Barcode+128&display=swap');
+    
+    body {
+      font-family: 'Gowun Dodum', 'Noto Sans TC', sans-serif;
+      background-color: #f7f5ff;
+    }
+    
+    .font-mono-code {
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+    }
+    
+    .font-barcode {
+      font-family: 'Libre Barcode 128', cursive;
+    }
+
+    /* Korean Aesthetic Soft Pattern Background */
+    .korean-bg-pattern {
+      background-color: #f6f3ff;
+      background-image: radial-gradient(#a78bfa 0.8px, transparent 0.8px), radial-gradient(#a78bfa 0.8px, #f6f3ff 0.8px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+      background-opacity: 0.15;
+    }
+
+    /* Soft Glow Effects */
+    .k-glow-purple {
+      box-shadow: 0 10px 25px -5px rgba(167, 139, 250, 0.25);
+    }
+    .k-glow-pink {
+      box-shadow: 0 10px 25px -5px rgba(251, 113, 133, 0.25);
+    }
+
+    /* OnlineGDB Editor Overlay Styling */
+    .gdb-editor-wrapper {
+      position: relative;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+    }
+
+    /* Standardized typography for text area and highlight code layer */
+    .gdb-code-target {
+      font-family: 'Fira Code', Consolas, Monaco, monospace !important;
+      line-height: 1.6 !important;
+      tab-size: 4 !important;
+      -moz-tab-size: 4 !important;
+      white-space: pre !important;
+      word-wrap: normal !important;
+      word-break: normal !important;
+      margin: 0 !important;
+      padding: 16px !important;
+      border: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Prism Highlighting Layer */
+    #highlightLayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      background: transparent !important;
+    }
+
+    #highlightCode {
+      background: transparent !important;
+      color: #d4d4d4;
+    }
+
+    /* Textarea Input Layer */
+    #pythonCode {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 580px;
+      background: transparent;
+      color: transparent;
+      caret-color: #ffffff;
+      resize: vertical;
+      outline: none;
+      z-index: 10;
+    }
+
+    /* OnlineGDB Specific Prism Colors Override */
+    .token.keyword { color: #569cd6 !important; font-weight: bold; }
+    .token.builtin { color: #4ec9b0 !important; }
+    .token.function { color: #dcdcaa !important; }
+    .token.number { color: #b5cea8 !important; }
+    .token.string { color: #ce9178 !important; }
+    .token.comment { color: #6a9955 !important; font-style: italic; }
+    .token.operator { color: #d4d4d4 !important; }
+    .token.punctuation { color: #d4d4d4 !important; }
+
+    /* Custom Scrollbar for Code Editor */
+    textarea::-webkit-scrollbar, #highlightLayer::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    textarea::-webkit-scrollbar-thumb {
+      background: #3e3e42;
+      border-radius: 5px;
+    }
+    textarea::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+
+    /* Dynamic Receipt Print Animation */
+    @keyframes printTicket {
+      0% {
+        opacity: 0;
+        transform: translateY(-25px) scale(0.92);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .receipt-print-anim {
+      animation: printTicket 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+  </style>
+</head>
+<body class="korean-bg-pattern text-slate-800 min-h-screen pb-12">
+
+  <!-- Header Section with Korean Pop Style -->
+  <header class="bg-gradient-to-r from-violet-500 via-purple-500 to-rose-400 text-white shadow-lg border-b-4 border-purple-600">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="bg-white/95 text-purple-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md transform -rotate-3 hover:rotate-0 transition">
+          🎬
+        </span>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-rose-100 text-rose-600 text-[11px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-rose-200">
+              Lesson 04 💖
+            </span>
+          </div>
+          <h1 class="text-xl md:text-2xl font-black tracking-wide mt-0.5">堂課4：威秀影城票價計算 - Python 挑戰賽</h1>
+        </div>
+      </div>
+      <span class="text-xs bg-purple-900/40 text-purple-100 border-2 border-white/40 font-mono px-4 py-1.5 rounded-full backdrop-blur-md font-bold shadow-inner flex items-center gap-1.5">
+        ✨ OnlineGDB Style IDE
+      </span>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 mt-6 space-y-6">
+
+    <!-- Step 0: Student Info Selection -->
+    <section class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 relative overflow-hidden k-glow-purple">
+      <div class="absolute -top-6 -right-6 w-28 h-28 bg-purple-100/60 rounded-full pointer-events-none"></div>
+      
+      <h2 class="text-base font-black text-purple-950 mb-3 flex items-center gap-2">
+        <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">0</span>
+        學生身份與作業選擇 🎒
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1.5">選擇班級</label>
+          <select id="classSelect" class="w-full p-2.5 bg-purple-50/50 border-2 border-purple-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+            <option value="F5A">F5A</option>
+            <option value="F5B">F5B</option>
+            <option value="F5C">F5C</option>
+            <option value="F5D">F5D</option>
+            <option value="F5E">F5E</option>
+            <option value="F5F">F5F</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1.5">選擇學號 (1 ~ 38)</label>
+          <select id="seatSelect" class="w-full p-2.5 bg-purple-50/50 border-2 border-purple-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1.5">作業編號 (已鎖定)</label>
+          <select id="assignmentSelect" disabled class="w-full p-2.5 bg-slate-100 border-2 border-slate-200 rounded-2xl text-sm font-black text-slate-500 cursor-not-allowed focus:outline-none">
+            <!-- Populated via JS (P4) -->
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 1: Real Situation Experience -->
+    <section class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 k-glow-purple">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-base font-black text-purple-950 flex items-center gap-2">
+          <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">1</span>
+          情境體驗：電影票價試算器 (澳門幣 MOP) 🎟️
+        </h2>
+        <span class="text-xs bg-rose-100 text-rose-600 font-black px-3 py-1 rounded-full border border-rose-200 flex items-center gap-1">
+          ✨ 巢狀條件判斷
+        </span>
+      </div>
+
+      <p class="text-slate-600 text-xs md:text-sm mb-4 font-medium">
+        請輸入觀影者的「年齡」、「是否為會員」以及「是否加購爆米花套餐」，即時體驗韓系觀影明細發票機列印！
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1.5">請輸入年齡：</label>
+          <input type="number" id="ageInput" min="0" max="120" placeholder="例如：25" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1.5">是否為會員？</label>
+          <select id="memberInput" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+            <option value="是">是</option>
+            <option value="否" selected>否</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1.5">是否加購爆米花套餐？ 🍿</label>
+          <select id="comboInput" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+            <option value="是">是</option>
+            <option value="否" selected>否</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="calculateTicketPrice()" class="w-full bg-gradient-to-r from-purple-500 to-rose-400 hover:from-purple-600 hover:to-rose-500 active:scale-[0.99] text-white font-black px-5 py-3 rounded-2xl transition text-sm flex items-center justify-center gap-2 shadow-md mb-4 border-b-4 border-purple-700">
+        <i class="fa-solid fa-receipt"></i>
+        測試 1：列印韓系觀影收據 (MOP)
+      </button>
+
+      <!-- Dynamic Movie Ticket Receipt Visual Output -->
+      <div id="resultBox1" class="hidden flex justify-center py-6 bg-slate-900/90 rounded-3xl shadow-inner overflow-hidden border-2 border-slate-700">
+        <div id="receiptCard" class="receipt-print-anim w-full max-w-sm bg-purple-50/95 text-slate-800 rounded-3xl p-6 shadow-2xl relative border-t-8 border-purple-500 font-mono">
+          
+          <!-- Korean Cinema Header -->
+          <div class="text-center border-b-2 border-dashed border-purple-200 pb-4 mb-4">
+            <div class="flex justify-center items-center gap-2 text-purple-700 font-black text-lg">
+              <span>VIE SHOW CINEMAS</span>
+              <span class="text-xs bg-rose-400 text-white px-2 py-0.5 rounded-full">CGV Style</span>
+            </div>
+            <p class="text-[11px] text-purple-900 font-bold tracking-widest mt-1">威秀影城 觀影明細聯</p>
+            <p class="text-[10px] text-slate-400 mt-1" id="receiptTime">2026-10-29 15:30:00</p>
+          </div>
+
+          <!-- Ticket Details Table -->
+          <div class="space-y-2.5 text-xs">
+            <div class="flex justify-between items-center text-slate-600 font-bold">
+              <span>觀影者條件：</span>
+              <span class="text-purple-700"><span id="receiptAge">25</span>歲 | 會員:<span id="receiptMember">否</span></span>
+            </div>
+            
+            <div class="border-b border-purple-200 pb-2 space-y-1.5 font-bold">
+              <div class="flex justify-between">
+                <span>票價種類 (<span id="receiptType">全票</span>)</span>
+                <span>MOP <span id="receiptBasePrice">300</span></span>
+              </div>
+              <div class="flex justify-between text-rose-500" id="receiptMemberRow">
+                <span>會員專屬折扣 (9折) 💖</span>
+                <span>- MOP <span id="receiptMemberDiscount">0</span></span>
+              </div>
+              <div class="flex justify-between text-purple-600" id="receiptComboRow">
+                <span>加購爆米花+飲料套餐 🍿</span>
+                <span>+ MOP <span id="receiptComboAdd">0</span></span>
+              </div>
+            </div>
+
+            <!-- Total Amount -->
+            <div class="pt-2 flex justify-between items-baseline">
+              <span class="text-sm font-black text-slate-800">應付總金額 Total:</span>
+              <span class="text-2xl font-black text-purple-600">MOP <span id="displayTotalPrice">0</span></span>
+            </div>
+          </div>
+
+          <!-- Barcode Footer -->
+          <div class="mt-6 pt-4 border-t-2 border-dashed border-purple-200 text-center space-y-1">
+            <div class="text-3xl tracking-wider text-slate-700 font-barcode">||| | ||||| ||| ||| ||||</div>
+            <p class="text-[10px] text-slate-400 font-sans font-bold">즐거운 관람 되세요! 祝您觀影愉快！</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 2: OnlineGDB Style Python Editor -->
+    <section class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 k-glow-purple">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-base font-black text-purple-950 flex items-center gap-2">
+          <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">2</span>
+          自主挑戰：撰寫 Python 程式碼 💻
+        </h2>
+        <span id="pyodideStatus" class="text-xs bg-purple-100 text-purple-800 font-bold px-3 py-1 rounded-full flex items-center gap-1.5 border border-purple-200">
+          <i class="fa-solid fa-spinner animate-spin"></i> Python 引擎載入中...
+        </span>
+      </div>
+
+      <!-- 常駐顯示在輸入框上方的編程提示卡片 -->
+      <div class="bg-gradient-to-r from-purple-50 via-pink-50 to-rose-50 border-l-4 border-purple-500 p-4 rounded-r-2xl mb-4 text-xs md:text-sm text-slate-700 space-y-1.5 shadow-sm">
+        <p class="font-black text-purple-950 flex items-center gap-2">
+          ✨ 題目規則與參考算式 (澳門幣 MOP)：
+        </p>
+        <ul class="list-disc list-inside space-y-1 text-slate-600 font-mono text-xs pl-1">
+          <li><b>基礎票價：</b> 12 歲以下 (含) → 兒童票 <b>MOP 250</b>； 65 歲以上 (含) → 敬老票 <b>MOP 220</b>； 其他 → 全票 <b>MOP 300</b></li>
+          <li><b>會員折扣：</b> 若為會員 (<code class="bg-purple-100 px-1.5 py-0.5 rounded text-purple-900 font-bold">"是"</code>)，上述票價再打 <b>9 折</b></li>
+          <li><b>加購套餐：</b> 若加購爆米花套餐 (<code class="bg-purple-100 px-1.5 py-0.5 rounded text-purple-900 font-bold">"是"</code>) → 加收 <b>MOP 150</b></li>
+          <li><b>最終輸出：</b> 請印出算出的<b>總金額</b>（整數或浮點數皆可）</li>
+        </ul>
+      </div>
+
+      <!-- OnlineGDB Style IDE Window -->
+      <div class="rounded-3xl overflow-hidden border-2 border-slate-700 shadow-xl bg-[#1e1e1e]">
+        
+        <!-- OnlineGDB Header Toolbar -->
+        <div class="bg-[#2d2d2d] px-4 py-2.5 border-b border-slate-700 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <!-- OnlineGDB Green Run Button -->
+            <button id="test2Btn" onclick="testPythonCode()" disabled class="bg-[#28a745] hover:bg-[#218838] active:scale-95 disabled:opacity-40 text-white text-xs font-black px-4 py-2 rounded-xl flex items-center gap-2 transition cursor-pointer shadow">
+              <i class="fa-solid fa-play text-xs"></i> Run (測試 2)
+            </button>
+            <!-- Clear Button -->
+            <button onclick="clearEditor()" class="bg-[#3e3e42] hover:bg-[#4e4e52] text-slate-200 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-rotate-left"></i> 清除
+            </button>
+            <span class="text-xs text-slate-400 font-mono hidden sm:inline ml-2">OnlineGDB Python Debugger</span>
+          </div>
+
+          <!-- Font Size Controls -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400 font-medium">字體:</span>
+            <button onclick="changeFontSize(-2)" class="bg-[#3e3e42] hover:bg-[#4e4e52] text-slate-200 w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs transition" title="縮小字體">
+              <i class="fa-solid fa-minus"></i>
+            </button>
+            <span id="fontSizeDisplay" class="text-xs font-mono text-purple-300 min-w-[36px] text-center font-bold">22px</span>
+            <button onclick="changeFontSize(2)" class="bg-[#3e3e42] hover:bg-[#4e4e52] text-slate-200 w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs transition" title="放大字體">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- OnlineGDB Editor Workspace -->
+        <div class="relative flex min-h-[580px] bg-[#1e1e1e]">
+          <!-- Line Numbers Column -->
+          <div id="lineNumbers" class="w-12 bg-[#252526] text-[#858585] font-mono text-right pr-3 pt-4 select-none border-r border-[#333333] flex-shrink-0" style="font-size: 22px; line-height: 1.6;">
+            1
+          </div>
+
+          <!-- Code Overlay Container -->
+          <div class="relative flex-1 overflow-hidden gdb-editor-wrapper">
+            <!-- Syntax Highlighting Layer -->
+            <pre id="highlightLayer" aria-hidden="true" class="gdb-code-target"><code id="highlightCode" class="language-python gdb-code-target"></code></pre>
+
+            <!-- Textarea Input Layer -->
+            <textarea id="pythonCode" onfocus="autoSetFontSize(24)" oninput="handleEditorInput()" onkeydown="handleKeyDown(event)" onscroll="syncScroll()" class="gdb-code-target" style="font-size: 22px; line-height: 1.6;" spellcheck="false">age = int(input("請輸入年齡: "))
+is_member = input("是否為會員? (是/否): ")
+add_combo = input("是否加購爆米花套餐? (是/否): ")
+
+# 請在下方撰寫計算總金額 (MOP) 的程式邏輯
+</textarea>
+          </div>
+        </div>
+
+        <!-- OnlineGDB Console / Terminal Panel -->
+        <div id="consoleContainer" class="border-t border-[#333333] bg-[#1e1e1e] p-4 font-mono">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-[#333333]">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-purple-400"></i> Console Output (測試結果)
+            </span>
+            <span id="test2StatusText" class="text-xs font-medium text-slate-400">
+              尚未進行測試 2
+            </span>
+          </div>
+          <!-- Test Output Log -->
+          <div id="testOutputArea" class="text-sm text-slate-200 min-h-[70px] max-h-60 overflow-y-auto font-mono whitespace-pre-wrap leading-relaxed">
+            <span class="text-slate-500 text-xs">點擊上方綠色「Run (測試 2)」按鈕，系統將自動輸入多組測試案例進行驗證...</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Step 3: Export Result as Image -->
+    <section id="exportSection" class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 k-glow-purple">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-base font-black text-purple-950 flex items-center gap-2">
+          <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">3</span>
+          匯出學習成果卡片 📸
+        </h2>
+      </div>
+
+      <p class="text-slate-600 text-xs md:text-sm mb-4 font-medium">
+        完成「測試 2」驗證成功後，點擊下方「輸出圖檔」按鈕，即可將你的韓系風格學習成果儲存為圖片檔！
+      </p>
+
+      <!-- Printable Certificate/Card Container -->
+      <div class="overflow-x-auto pb-2">
+        <div id="captureCard" class="bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 border-4 border-purple-400/60 p-6 rounded-3xl min-w-[500px] max-w-2xl mx-auto shadow-2xl relative text-white">
+          <!-- Card Header -->
+          <div class="flex justify-between items-start border-b border-slate-700/80 pb-4 mb-4">
+            <div>
+              <span class="text-xs font-black uppercase tracking-wider text-purple-300 bg-purple-900/80 px-3 py-0.5 rounded-full border border-purple-400/30">Python 學習成果卡 ✨</span>
+              <h3 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
+                🎬 題目：威秀影城票價計算 (MOP)
+              </h3>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-black bg-rose-400 text-white px-3 py-1 rounded-xl inline-block shadow-sm">
+                學生：<span id="cardStudentId">F5A_01_P4</span>
+              </div>
+              <div class="text-xs text-purple-200 mt-1 font-mono" id="cardDate">2026-10-29</div>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="space-y-4 text-sm">
+            <div class="grid grid-cols-2 gap-3 bg-slate-800/80 p-3.5 rounded-2xl border border-slate-700">
+              <div>
+                <span class="text-slate-400 text-xs font-bold">測試 1 條件：</span>
+                <p class="font-bold text-slate-100 text-xs mt-0.5">
+                  <span id="cardAgeInput">--</span>歲 | 會員: <span id="cardMemberInput">--</span> | 套餐: <span id="cardComboInput">--</span>
+                </p>
+              </div>
+              <div>
+                <span class="text-slate-400 text-xs font-bold">試算總金額：</span>
+                <p class="font-black text-purple-300 text-base">MOP <span id="cardTicketOutput">--</span></p>
+              </div>
+            </div>
+
+            <div>
+              <span class="text-xs font-bold text-slate-300 block mb-1">自訂 Python 程式碼 (OnlineGDB)：</span>
+              <pre id="cardCodeDisplay" class="bg-[#1e1e1e] text-purple-300 p-3.5 rounded-2xl text-xs font-mono-code overflow-x-auto min-h-[80px] border border-slate-700"># 尚未測試完成</pre>
+            </div>
+
+            <div class="flex justify-between items-center bg-purple-950/60 border border-purple-400/30 p-3 rounded-2xl">
+              <span class="text-xs font-bold text-purple-300 flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-purple-400 text-sm"></i>
+                程式測試狀態：<span id="cardStatus">等待測試 2</span>
+              </span>
+              <span class="text-[10px] text-purple-300/80 font-mono">Verified by Pyodide Engine</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Action Button -->
+      <div class="mt-6 text-center">
+        <button id="exportBtn" onclick="exportCardImage()" disabled class="bg-gradient-to-r from-purple-500 to-rose-400 hover:from-purple-600 hover:to-rose-500 border-b-4 border-purple-700 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 text-white font-black px-8 py-3 rounded-2xl transition inline-flex items-center gap-2 shadow-lg">
+          <i class="fa-solid fa-file-image"></i>
+          輸出圖檔 (<span id="exportFileName">F5A_01_P4.png</span>)
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Message Box Modal -->
+  <div id="msgModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border-4 border-purple-100 text-center space-y-4">
+      <div id="modalIcon" class="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl"></div>
+      <h3 id="modalTitle" class="text-lg font-black text-slate-800"></h3>
+      <p id="modalMessage" class="text-sm font-medium text-slate-600"></p>
+      <button onclick="closeModal()" class="w-full py-2.5 bg-purple-500 hover:bg-purple-600 text-white font-black rounded-2xl text-sm transition shadow-md border-b-4 border-purple-700">
+        確定
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let pyodide = null;
+    let isTest2Passed = false;
+    let currentFontSize = 22;
+
+    // Initialize Page
+    window.onload = async function() {
+      populateSeatNumbers();
+      populateAssignmentNumbers();
+      updateCardInfo();
+      handleEditorInput(); // Trigger initial highlight & line numbers
+      
+      const now = new Date();
+      document.getElementById('cardDate').innerText = now.toISOString().split('T')[0];
+
+      document.getElementById('classSelect').addEventListener('change', updateCardInfo);
+      document.getElementById('seatSelect').addEventListener('change', updateCardInfo);
+      document.getElementById('assignmentSelect').addEventListener('change', updateCardInfo);
+
+      // Load Pyodide Engine
+      try {
+        pyodide = await loadPyodide();
+        const pyStatus = document.getElementById('pyodideStatus');
+        pyStatus.className = "text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full flex items-center gap-1.5 border border-emerald-200";
+        pyStatus.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i> Python 引擎就緒';
+        document.getElementById('test2Btn').disabled = false;
+      } catch (err) {
+        console.error("Pyodide Fail:", err);
+        const pyStatus = document.getElementById('pyodideStatus');
+        pyStatus.className = "text-xs bg-rose-100 text-rose-800 font-bold px-3 py-1 rounded-full border border-rose-200";
+        pyStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> 引擎載入失敗，請重新整理';
+      }
+    };
+
+    // Font Size Controls
+    function changeFontSize(delta) {
+      currentFontSize = Math.max(14, Math.min(32, currentFontSize + delta));
+      applyFontSize(currentFontSize);
+    }
+
+    // Automatically set font size to specific target (e.g. 24px on focus)
+    function autoSetFontSize(targetSize) {
+      if (currentFontSize !== targetSize) {
+        currentFontSize = targetSize;
+        applyFontSize(currentFontSize);
+      }
+    }
+
+    function applyFontSize(size) {
+      document.getElementById('fontSizeDisplay').innerText = `${size}px`;
+      
+      const textarea = document.getElementById('pythonCode');
+      const highlightLayer = document.getElementById('highlightLayer');
+      const lineNumbers = document.getElementById('lineNumbers');
+      
+      textarea.style.fontSize = `${size}px`;
+      highlightLayer.style.fontSize = `${size}px`;
+      lineNumbers.style.fontSize = `${size}px`;
+
+      handleEditorInput();
+    }
+
+    // Handle Input & Live Highlighting
+    function handleEditorInput() {
+      const textarea = document.getElementById('pythonCode');
+      const highlightCode = document.getElementById('highlightCode');
+      
+      let text = textarea.value;
+      if (text.endsWith('\n')) {
+        text += ' ';
+      }
+
+      // Syntax Highlight via Prism
+      highlightCode.innerHTML = Prism.highlight(text, Prism.languages.python, 'python');
+      
+      updateLineNumbers();
+      syncScroll();
+    }
+
+    function updateLineNumbers() {
+      const textarea = document.getElementById('pythonCode');
+      const lineNumbers = document.getElementById('lineNumbers');
+      const lines = textarea.value.split('\n').length;
+      
+      const totalDisplayLines = Math.max(lines, 20);
+      let lineNumHTML = '';
+      for (let i = 1; i <= totalDisplayLines; i++) {
+        lineNumHTML += `${i}<br>`;
+      }
+      lineNumbers.innerHTML = lineNumHTML;
+    }
+
+    function syncScroll() {
+      const textarea = document.getElementById('pythonCode');
+      const highlightLayer = document.getElementById('highlightLayer');
+      const lineNumbers = document.getElementById('lineNumbers');
+      
+      highlightLayer.scrollTop = textarea.scrollTop;
+      highlightLayer.scrollLeft = textarea.scrollLeft;
+      lineNumbers.scrollTop = textarea.scrollTop;
+    }
+
+    // Allow Tab key inside textarea
+    function handleKeyDown(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const textarea = e.target;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+
+        textarea.value = textarea.value.substring(0, start) + "    " + textarea.value.substring(end);
+        textarea.selectionStart = textarea.selectionEnd = start + 4;
+
+        handleEditorInput();
+      }
+    }
+
+    function clearEditor() {
+      const textarea = document.getElementById('pythonCode');
+      textarea.value = `age = int(input("請輸入年齡: "))\nis_member = input("是否為會員? (是/否): ")\nadd_combo = input("是否加購爆米花套餐? (是/否): ")\n\n# 請在下方撰寫計算總金額 (MOP) 的程式邏輯\n`;
+      handleEditorInput();
+    }
+
+    function populateSeatNumbers() {
+      const select = document.getElementById('seatSelect');
+      select.innerHTML = '';
+      for (let i = 1; i <= 38; i++) {
+        const val = i < 10 ? `0${i}` : `${i}`;
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = `${i} 號 (${val})`;
+        select.appendChild(opt);
+      }
+    }
+
+    function populateAssignmentNumbers() {
+      const select = document.getElementById('assignmentSelect');
+      select.innerHTML = '';
+      const opt = document.createElement('option');
+      opt.value = 'P4';
+      opt.textContent = '作業 P4';
+      opt.selected = true;
+      select.appendChild(opt);
+    }
+
+    function getStudentId() {
+      const className = document.getElementById('classSelect').value;
+      const seatNo = document.getElementById('seatSelect').value;
+      const assignment = document.getElementById('assignmentSelect').value;
+      return `${className}_${seatNo}_${assignment}`;
+    }
+
+    function updateCardInfo() {
+      const studentId = getStudentId();
+      document.getElementById('cardStudentId').innerText = studentId;
+      document.getElementById('exportFileName').innerText = `${studentId}.png`;
+    }
+
+    function showModal(title, msg, type = 'info') {
+      const modal = document.getElementById('msgModal');
+      const icon = document.getElementById('modalIcon');
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalMessage').innerText = msg;
+
+      if (type === 'success') {
+        icon.className = 'w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl bg-emerald-100 text-emerald-600';
+        icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+      } else if (type === 'error') {
+        icon.className = 'w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl bg-rose-100 text-rose-600';
+        icon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      } else {
+        icon.className = 'w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl bg-purple-100 text-purple-600';
+        icon.innerHTML = '<i class="fa-solid fa-info"></i>';
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('msgModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Step 1 Ticket Price Calculation with Movie Receipt Visual in MOP
+    function calculateTicketPrice() {
+      const ageInput = document.getElementById('ageInput').value;
+      if (ageInput === '' || ageInput < 0) {
+        showModal('輸入錯誤', '請輸入有效的年齡數值！', 'error');
+        return;
+      }
+
+      const age = parseInt(ageInput, 10);
+      const isMember = document.getElementById('memberInput').value;
+      const addCombo = document.getElementById('comboInput').value;
+
+      let basePrice = 300;
+      let ticketType = "全票";
+
+      if (age <= 12) {
+        basePrice = 250;
+        ticketType = "兒童票";
+      } else if (age >= 65) {
+        basePrice = 220;
+        ticketType = "敬老票";
+      }
+
+      let price = basePrice;
+      let discountAmount = 0;
+
+      if (isMember === "是") {
+        discountAmount = basePrice * 0.1;
+        price = price * 0.9;
+        document.getElementById('receiptMemberRow').classList.remove('hidden');
+      } else {
+        document.getElementById('receiptMemberRow').classList.add('hidden');
+      }
+
+      let comboAmount = 0;
+      if (addCombo === "是") {
+        comboAmount = 150;
+        price += 150;
+        document.getElementById('receiptComboRow').classList.remove('hidden');
+      } else {
+        document.getElementById('receiptComboRow').classList.add('hidden');
+      }
+
+      // Format receipt fields
+      document.getElementById('receiptAge').innerText = age;
+      document.getElementById('receiptMember').innerText = isMember;
+      document.getElementById('receiptType').innerText = ticketType;
+      document.getElementById('receiptBasePrice').innerText = basePrice;
+      document.getElementById('receiptMemberDiscount').innerText = discountAmount.toFixed(0);
+      document.getElementById('receiptComboAdd').innerText = comboAmount;
+      
+      const formattedTotal = price % 1 === 0 ? price.toFixed(0) : price.toFixed(1);
+      document.getElementById('displayTotalPrice').innerText = formattedTotal;
+
+      // Update Card info
+      document.getElementById('cardAgeInput').innerText = age;
+      document.getElementById('cardMemberInput').innerText = isMember;
+      document.getElementById('cardComboInput').innerText = addCombo;
+      document.getElementById('cardTicketOutput').innerText = formattedTotal;
+
+      // Timestamp for receipt
+      const d = new Date();
+      document.getElementById('receiptTime').innerText = d.toLocaleString();
+
+      const resultBox = document.getElementById('resultBox1');
+      resultBox.classList.remove('hidden');
+      
+      // Re-trigger animation
+      const receiptCard = document.getElementById('receiptCard');
+      receiptCard.classList.remove('receipt-print-anim');
+      void receiptCard.offsetWidth; // Trigger reflow
+      receiptCard.classList.add('receipt-print-anim');
+    }
+
+    // Step 2: Test Student Python Code
+    async function testPythonCode() {
+      if (!pyodide) {
+        showModal('系統提示', 'Python 引擎尚未載入完成，請稍候...', 'info');
+        return;
+      }
+
+      const code = document.getElementById('pythonCode').value.trim();
+      if (!code) {
+        showModal('提示', '請先輸入你的 Python 程式碼！', 'error');
+        return;
+      }
+
+      const outputArea = document.getElementById('testOutputArea');
+      outputArea.innerHTML = '<span class="text-purple-400 font-bold"><i class="fa-solid fa-spinner animate-spin"></i> 測試執行中，正在輸入多組測試資料驗證...</span>';
+
+      const testCases = [
+        { age: 10, member: "否", combo: "否", expected: 250, desc: "10歲/非會員/無套餐" },
+        { age: 30, member: "是", combo: "是", expected: 420, desc: "30歲/會員/加套餐" },
+        { age: 70, member: "是", combo: "否", expected: 198, desc: "70歲/會員/無套餐" },
+        { age: 20, member: "否", combo: "是", expected: 450, desc: "20歲/非會員/加套餐" }
+      ];
+
+      let allPassed = true;
+      let logs = [];
+
+      for (let i = 0; i < testCases.length; i++) {
+        const tc = testCases[i];
+        
+        try {
+          pyodide.runPython(`
+import sys
+import io
+
+sys.stdin = io.StringIO("${tc.age}\\n${tc.member}\\n${tc.combo}\\n")
+sys.stdout = io.StringIO()
+          `);
+
+          await pyodide.runPythonAsync(code);
+
+          const pyStdout = pyodide.runPython("sys.stdout.getvalue()").trim();
+          
+          const numbersInOutput = pyStdout.match(/[-+]?[0-9]*\.?[0-9]+/g);
+          const lastNum = numbersInOutput ? parseFloat(numbersInOutput[numbersInOutput.length - 1]) : null;
+
+          if (lastNum !== null && Math.abs(lastNum - tc.expected) < 0.01) {
+            logs.push(`<div class="text-emerald-400 font-mono">✓ 測試項 ${i+1} [${tc.desc}] -> 輸出包含金額: MOP ${tc.expected} (正確)</div>`);
+          } else {
+            allPassed = false;
+            logs.push(`<div class="text-rose-400 font-mono">✗ 測試項 ${i+1} [${tc.desc}] -> 期望金額: MOP ${tc.expected}, 但你的程式輸出: "${pyStdout || '無輸出'}"</div>`);
+          }
+
+        } catch (err) {
+          allPassed = false;
+          logs.push(`<div class="text-rose-400 font-mono">✗ 測試項 ${i+1} [${tc.desc}] -> 語法/執行錯誤: ${err.message.split('\n').pop()}</div>`);
+        }
+      }
+
+      outputArea.innerHTML = logs.join('');
+
+      const statusText = document.getElementById('test2StatusText');
+      const cardStatus = document.getElementById('cardStatus');
+      const cardCodeDisplay = document.getElementById('cardCodeDisplay');
+      const exportBtn = document.getElementById('exportBtn');
+
+      cardCodeDisplay.innerText = code;
+
+      if (allPassed) {
+        isTest2Passed = true;
+        statusText.className = "text-xs font-bold text-emerald-400 flex items-center gap-1";
+        statusText.innerHTML = '<i class="fa-solid fa-circle-check"></i> 測試 2 成功通過！';
+        
+        cardStatus.className = "text-purple-300 font-bold";
+        cardStatus.innerText = "驗證成功 (PASSED)";
+
+        exportBtn.disabled = false;
+        showModal('🎉 太棒了！', '你的 Python 程式碼完全正確！現在可以點擊下方的「輸出圖檔」按鈕囉。', 'success');
+      } else {
+        isTest2Passed = false;
+        statusText.className = "text-xs font-bold text-rose-400 flex items-center gap-1";
+        statusText.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> 測試失敗，請修正程式碼';
+
+        cardStatus.className = "text-rose-400 font-bold";
+        cardStatus.innerText = "未通過 (FAILED)";
+
+        exportBtn.disabled = true;
+      }
+    }
+
+    // Step 3: Export HTML Card as PNG Image
+    function exportCardImage() {
+      if (!isTest2Passed) {
+        showModal('無法輸出', '請先成功通過「測試 2」後再匯出圖檔！', 'error');
+        return;
+      }
+
+      const card = document.getElementById('captureCard');
+      const fileName = `${getStudentId()}.png`;
+
+      const exportBtn = document.getElementById('exportBtn');
+      const originalText = exportBtn.innerHTML;
+      exportBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> 圖片產生中...';
+      exportBtn.disabled = true;
+
+      html2canvas(card, {
+        scale: 2,
+        backgroundColor: '#0f172a',
+        useCORS: true
+      }).then(async canvas => {
+        const imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+        if ('showSaveFilePicker' in window) {
+          try {
+            const handle = await window.showSaveFilePicker({
+              suggestedName: fileName,
+              types: [{
+                description: 'PNG Image',
+                accept: { 'image/png': ['.png'] },
+              }],
+            });
+            const writable = await handle.createWritable();
+            await writable.write(imageBlob);
+            await writable.close();
+
+            exportBtn.innerHTML = originalText;
+            exportBtn.disabled = false;
+            showModal('儲存成功', `學習成果圖檔 (${fileName}) 已成功儲存！`, 'success');
+            return;
+          } catch (err) {
+            if (err.name === 'AbortError') {
+              exportBtn.innerHTML = originalText;
+              exportBtn.disabled = false;
+              return;
+            }
+            console.warn("SaveFilePicker 失敗或取消，改用傳統下載方式", err);
+          }
+        }
+
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = image;
+        link.click();
+
+        exportBtn.innerHTML = originalText;
+        exportBtn.disabled = false;
+
+        showModal('下載成功', `學習成果圖檔 (${fileName}) 已開始下載！`, 'success');
+      }).catch(err => {
+        console.error(err);
+        exportBtn.innerHTML = originalText;
+        exportBtn.disabled = false;
+        showModal('匯出失敗', '產生圖檔時發生錯誤，請重試。', 'error');
+      });
+    }
+  </script>
+</body>
+</html>
