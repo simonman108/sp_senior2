@@ -18,11 +18,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Gowun+Dodum&family=Fira+Code:wght@400;500;600&family=Libre+Barcode+128&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fredoka:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=Libre+Barcode+128&display=swap');
     
     body {
-      font-family: 'Gowun Dodum', 'Noto Sans TC', sans-serif;
-      background-color: #f7f5ff;
+      font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
+      background-color: #f0fdf4;
     }
     
     .font-mono-code {
@@ -33,21 +33,18 @@
       font-family: 'Libre Barcode 128', cursive;
     }
 
-    /* Korean Aesthetic Soft Pattern Background */
-    .korean-bg-pattern {
-      background-color: #f6f3ff;
-      background-image: radial-gradient(#a78bfa 0.8px, transparent 0.8px), radial-gradient(#a78bfa 0.8px, #f6f3ff 0.8px);
-      background-size: 28px 28px;
-      background-position: 0 0, 14px 14px;
-      background-opacity: 0.15;
+    /* Campus Notebook Grid Pattern Background */
+    .campus-bg-pattern {
+      background-color: #f2fbf5;
+      background-image: 
+        linear-gradient(to right, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
 
-    /* Soft Glow Effects */
-    .k-glow-purple {
-      box-shadow: 0 10px 25px -5px rgba(167, 139, 250, 0.25);
-    }
-    .k-glow-pink {
-      box-shadow: 0 10px 25px -5px rgba(251, 113, 133, 0.25);
+    /* Campus Soft Shadows */
+    .campus-shadow {
+      box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.15);
     }
 
     /* OnlineGDB Editor Overlay Styling */
@@ -143,26 +140,26 @@
     }
   </style>
 </head>
-<body class="korean-bg-pattern text-slate-800 min-h-screen pb-12">
+<body class="campus-bg-pattern text-slate-800 min-h-screen pb-12">
 
-  <!-- Header Section with Korean Pop Style -->
-  <header class="bg-gradient-to-r from-violet-500 via-purple-500 to-rose-400 text-white shadow-lg border-b-4 border-purple-600">
+  <!-- Header Section with Campus Style -->
+  <header class="bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 text-white shadow-lg border-b-4 border-emerald-800">
     <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <span class="bg-white/95 text-purple-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md transform -rotate-3 hover:rotate-0 transition">
-          🎬
+        <span class="bg-amber-300 text-slate-900 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md transform -rotate-3 border-2 border-slate-900">
+          🎓
         </span>
         <div>
           <div class="flex items-center gap-2">
-            <span class="bg-rose-100 text-rose-600 text-[11px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-rose-200">
-              Lesson 04 💖
+            <span class="bg-emerald-100 text-emerald-800 text-[11px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-emerald-300">
+              Campus Lesson 04 🎒
             </span>
           </div>
           <h1 class="text-xl md:text-2xl font-black tracking-wide mt-0.5">堂課4：威秀影城票價計算 - Python 挑戰賽</h1>
         </div>
       </div>
-      <span class="text-xs bg-purple-900/40 text-purple-100 border-2 border-white/40 font-mono px-4 py-1.5 rounded-full backdrop-blur-md font-bold shadow-inner flex items-center gap-1.5">
-        ✨ OnlineGDB Style IDE
+      <span class="text-xs bg-emerald-950/40 text-emerald-100 border-2 border-white/40 font-mono px-4 py-1.5 rounded-full backdrop-blur-md font-bold shadow-inner flex items-center gap-1.5">
+        ✏️ OnlineGDB Style IDE
       </span>
     </div>
   </header>
@@ -170,17 +167,17 @@
   <main class="max-w-7xl mx-auto px-4 mt-6 space-y-6">
 
     <!-- Step 0: Student Info Selection -->
-    <section class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 relative overflow-hidden k-glow-purple">
-      <div class="absolute -top-6 -right-6 w-28 h-28 bg-purple-100/60 rounded-full pointer-events-none"></div>
+    <section class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-emerald-200 relative overflow-hidden campus-shadow">
+      <div class="absolute -top-6 -right-6 w-28 h-28 bg-emerald-100/60 rounded-full pointer-events-none"></div>
       
-      <h2 class="text-base font-black text-purple-950 mb-3 flex items-center gap-2">
-        <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">0</span>
-        學生身份與作業選擇 🎒
+      <h2 class="text-base font-black text-emerald-950 mb-3 flex items-center gap-2">
+        <span class="bg-emerald-600 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">0</span>
+        學生身份與作業選擇 📚
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1.5">選擇班級</label>
-          <select id="classSelect" class="w-full p-2.5 bg-purple-50/50 border-2 border-purple-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+          <select id="classSelect" class="w-full p-2.5 bg-emerald-50/50 border-2 border-emerald-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 focus:outline-none transition">
             <option value="F5A">F5A</option>
             <option value="F5B">F5B</option>
             <option value="F5C">F5C</option>
@@ -191,7 +188,7 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1.5">選擇學號 (1 ~ 38)</label>
-          <select id="seatSelect" class="w-full p-2.5 bg-purple-50/50 border-2 border-purple-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+          <select id="seatSelect" class="w-full p-2.5 bg-emerald-50/50 border-2 border-emerald-200 rounded-2xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 focus:outline-none transition">
             <!-- Populated via JS -->
           </select>
         </div>
@@ -205,78 +202,78 @@
     </section>
 
     <!-- Step 1: Real Situation Experience -->
-    <section class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 k-glow-purple">
+    <section class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-emerald-200 campus-shadow">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-base font-black text-purple-950 flex items-center gap-2">
-          <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">1</span>
+        <h2 class="text-base font-black text-emerald-950 flex items-center gap-2">
+          <span class="bg-emerald-600 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">1</span>
           情境體驗：電影票價試算器 (澳門幣 MOP) 🎟️
         </h2>
-        <span class="text-xs bg-rose-100 text-rose-600 font-black px-3 py-1 rounded-full border border-rose-200 flex items-center gap-1">
-          ✨ 巢狀條件判斷
+        <span class="text-xs bg-amber-100 text-amber-800 font-black px-3 py-1 rounded-full border border-amber-300 flex items-center gap-1">
+          💡 巢狀條件判斷
         </span>
       </div>
 
       <p class="text-slate-600 text-xs md:text-sm mb-4 font-medium">
-        請輸入觀影者的「年齡」、「是否為會員」以及「是否加購爆米花套餐」，即時體驗韓系觀影明細發票機列印！
+        請輸入觀影者的「年齡」、「是否為會員」以及「是否加購爆米花套餐」，即時體驗校園風觀影收據列印！
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1.5">請輸入年齡：</label>
-          <input type="number" id="ageInput" min="0" max="120" placeholder="例如：25" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+          <input type="number" id="ageInput" min="0" max="120" placeholder="例如：25" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 focus:outline-none transition">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1.5">是否為會員？</label>
-          <select id="memberInput" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+          <select id="memberInput" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 focus:outline-none transition">
             <option value="是">是</option>
             <option value="否" selected>否</option>
           </select>
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1.5">是否加購爆米花套餐？ 🍿</label>
-          <select id="comboInput" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-purple-400 focus:border-purple-400 focus:outline-none transition">
+          <select id="comboInput" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 focus:outline-none transition">
             <option value="是">是</option>
             <option value="否" selected>否</option>
           </select>
         </div>
       </div>
 
-      <button onclick="calculateTicketPrice()" class="w-full bg-gradient-to-r from-purple-500 to-rose-400 hover:from-purple-600 hover:to-rose-500 active:scale-[0.99] text-white font-black px-5 py-3 rounded-2xl transition text-sm flex items-center justify-center gap-2 shadow-md mb-4 border-b-4 border-purple-700">
+      <button onclick="calculateTicketPrice()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-[0.99] text-white font-black px-5 py-3 rounded-2xl transition text-sm flex items-center justify-center gap-2 shadow-md mb-4 border-b-4 border-emerald-800">
         <i class="fa-solid fa-receipt"></i>
-        測試 1：列印韓系觀影收據 (MOP)
+        測試 1：列印校園觀影收據 (MOP)
       </button>
 
       <!-- Dynamic Movie Ticket Receipt Visual Output -->
       <div id="resultBox1" class="hidden flex justify-center py-6 bg-slate-900/90 rounded-3xl shadow-inner overflow-hidden border-2 border-slate-700">
-        <div id="receiptCard" class="receipt-print-anim w-full max-w-sm bg-purple-50/95 text-slate-800 rounded-3xl p-6 shadow-2xl relative border-t-8 border-purple-500 font-mono">
+        <div id="receiptCard" class="receipt-print-anim w-full max-w-sm bg-amber-50/95 text-slate-800 rounded-3xl p-6 shadow-2xl relative border-t-8 border-emerald-600 font-mono">
           
-          <!-- Korean Cinema Header -->
-          <div class="text-center border-b-2 border-dashed border-purple-200 pb-4 mb-4">
-            <div class="flex justify-center items-center gap-2 text-purple-700 font-black text-lg">
+          <!-- Cinema Receipt Header -->
+          <div class="text-center border-b-2 border-dashed border-emerald-300 pb-4 mb-4">
+            <div class="flex justify-center items-center gap-2 text-emerald-800 font-black text-lg">
               <span>VIE SHOW CINEMAS</span>
-              <span class="text-xs bg-rose-400 text-white px-2 py-0.5 rounded-full">CGV Style</span>
+              <span class="text-xs bg-emerald-600 text-white px-2 py-0.5 rounded-full">School Ticket</span>
             </div>
-            <p class="text-[11px] text-purple-900 font-bold tracking-widest mt-1">威秀影城 觀影明細聯</p>
-            <p class="text-[10px] text-slate-400 mt-1" id="receiptTime">2026-10-29 15:30:00</p>
+            <p class="text-[11px] text-emerald-950 font-bold tracking-widest mt-1">威秀影城 觀影明細聯</p>
+            <p class="text-[10px] text-slate-500 mt-1" id="receiptTime">2026-10-29 15:30:00</p>
           </div>
 
           <!-- Ticket Details Table -->
           <div class="space-y-2.5 text-xs">
             <div class="flex justify-between items-center text-slate-600 font-bold">
               <span>觀影者條件：</span>
-              <span class="text-purple-700"><span id="receiptAge">25</span>歲 | 會員:<span id="receiptMember">否</span></span>
+              <span class="text-emerald-800"><span id="receiptAge">25</span>歲 | 會員:<span id="receiptMember">否</span></span>
             </div>
             
-            <div class="border-b border-purple-200 pb-2 space-y-1.5 font-bold">
+            <div class="border-b border-emerald-300 pb-2 space-y-1.5 font-bold">
               <div class="flex justify-between">
                 <span>票價種類 (<span id="receiptType">全票</span>)</span>
                 <span>MOP <span id="receiptBasePrice">300</span></span>
               </div>
-              <div class="flex justify-between text-rose-500" id="receiptMemberRow">
-                <span>會員專屬折扣 (9折) 💖</span>
+              <div class="flex justify-between text-amber-700" id="receiptMemberRow">
+                <span>會員專屬折扣 (9折) ✨</span>
                 <span>- MOP <span id="receiptMemberDiscount">0</span></span>
               </div>
-              <div class="flex justify-between text-purple-600" id="receiptComboRow">
+              <div class="flex justify-between text-teal-700" id="receiptComboRow">
                 <span>加購爆米花+飲料套餐 🍿</span>
                 <span>+ MOP <span id="receiptComboAdd">0</span></span>
               </div>
@@ -285,14 +282,14 @@
             <!-- Total Amount -->
             <div class="pt-2 flex justify-between items-baseline">
               <span class="text-sm font-black text-slate-800">應付總金額 Total:</span>
-              <span class="text-2xl font-black text-purple-600">MOP <span id="displayTotalPrice">0</span></span>
+              <span class="text-2xl font-black text-emerald-700">MOP <span id="displayTotalPrice">0</span></span>
             </div>
           </div>
 
           <!-- Barcode Footer -->
-          <div class="mt-6 pt-4 border-t-2 border-dashed border-purple-200 text-center space-y-1">
+          <div class="mt-6 pt-4 border-t-2 border-dashed border-emerald-300 text-center space-y-1">
             <div class="text-3xl tracking-wider text-slate-700 font-barcode">||| | ||||| ||| ||| ||||</div>
-            <p class="text-[10px] text-slate-400 font-sans font-bold">즐거운 관람 되세요! 祝您觀影愉快！</p>
+            <p class="text-[10px] text-slate-500 font-sans font-bold">🎓 祝您觀影愉快，學習順利！</p>
           </div>
 
         </div>
@@ -300,26 +297,26 @@
     </section>
 
     <!-- Step 2: OnlineGDB Style Python Editor -->
-    <section class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 k-glow-purple">
+    <section class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-emerald-200 campus-shadow">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-base font-black text-purple-950 flex items-center gap-2">
-          <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">2</span>
+        <h2 class="text-base font-black text-emerald-950 flex items-center gap-2">
+          <span class="bg-emerald-600 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">2</span>
           自主挑戰：撰寫 Python 程式碼 💻
         </h2>
-        <span id="pyodideStatus" class="text-xs bg-purple-100 text-purple-800 font-bold px-3 py-1 rounded-full flex items-center gap-1.5 border border-purple-200">
+        <span id="pyodideStatus" class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full flex items-center gap-1.5 border border-emerald-300">
           <i class="fa-solid fa-spinner animate-spin"></i> Python 引擎載入中...
         </span>
       </div>
 
       <!-- 常駐顯示在輸入框上方的編程提示卡片 -->
-      <div class="bg-gradient-to-r from-purple-50 via-pink-50 to-rose-50 border-l-4 border-purple-500 p-4 rounded-r-2xl mb-4 text-xs md:text-sm text-slate-700 space-y-1.5 shadow-sm">
-        <p class="font-black text-purple-950 flex items-center gap-2">
-          ✨ 題目規則與參考算式 (澳門幣 MOP)：
+      <div class="bg-emerald-50/80 border-l-4 border-emerald-600 p-4 rounded-r-2xl mb-4 text-xs md:text-sm text-slate-700 space-y-1.5 shadow-sm">
+        <p class="font-black text-emerald-950 flex items-center gap-2">
+          📝 題目規則與參考算式 (澳門幣 MOP)：
         </p>
         <ul class="list-disc list-inside space-y-1 text-slate-600 font-mono text-xs pl-1">
           <li><b>基礎票價：</b> 12 歲以下 (含) → 兒童票 <b>MOP 250</b>； 65 歲以上 (含) → 敬老票 <b>MOP 220</b>； 其他 → 全票 <b>MOP 300</b></li>
-          <li><b>會員折扣：</b> 若為會員 (<code class="bg-purple-100 px-1.5 py-0.5 rounded text-purple-900 font-bold">"是"</code>)，上述票價再打 <b>9 折</b></li>
-          <li><b>加購套餐：</b> 若加購爆米花套餐 (<code class="bg-purple-100 px-1.5 py-0.5 rounded text-purple-900 font-bold">"是"</code>) → 加收 <b>MOP 150</b></li>
+          <li><b>會員折扣：</b> 若為會員 (<code class="bg-emerald-100 px-1.5 py-0.5 rounded text-emerald-900 font-bold">"是"</code>)，上述票價再打 <b>9 折</b></li>
+          <li><b>加購套餐：</b> 若加購爆米花套餐 (<code class="bg-emerald-100 px-1.5 py-0.5 rounded text-emerald-900 font-bold">"是"</code>) → 加收 <b>MOP 150</b></li>
           <li><b>最終輸出：</b> 請印出算出的<b>總金額</b>（整數或浮點數皆可）</li>
         </ul>
       </div>
@@ -347,7 +344,7 @@
             <button onclick="changeFontSize(-2)" class="bg-[#3e3e42] hover:bg-[#4e4e52] text-slate-200 w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs transition" title="縮小字體">
               <i class="fa-solid fa-minus"></i>
             </button>
-            <span id="fontSizeDisplay" class="text-xs font-mono text-purple-300 min-w-[36px] text-center font-bold">22px</span>
+            <span id="fontSizeDisplay" class="text-xs font-mono text-emerald-400 min-w-[36px] text-center font-bold">22px</span>
             <button onclick="changeFontSize(2)" class="bg-[#3e3e42] hover:bg-[#4e4e52] text-slate-200 w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs transition" title="放大字體">
               <i class="fa-solid fa-plus"></i>
             </button>
@@ -380,7 +377,7 @@ add_combo = input("是否加購爆米花套餐? (是/否): ")
         <div id="consoleContainer" class="border-t border-[#333333] bg-[#1e1e1e] p-4 font-mono">
           <div class="flex items-center justify-between pb-2 mb-2 border-b border-[#333333]">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <i class="fa-solid fa-terminal text-purple-400"></i> Console Output (測試結果)
+              <i class="fa-solid fa-terminal text-emerald-400"></i> Console Output (測試結果)
             </span>
             <span id="test2StatusText" class="text-xs font-medium text-slate-400">
               尚未進行測試 2
@@ -396,34 +393,34 @@ add_combo = input("是否加購爆米花套餐? (是/否): ")
     </section>
 
     <!-- Step 3: Export Result as Image -->
-    <section id="exportSection" class="bg-white/90 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-purple-100 k-glow-purple">
+    <section id="exportSection" class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border-2 border-emerald-200 campus-shadow">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-base font-black text-purple-950 flex items-center gap-2">
-          <span class="bg-purple-500 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">3</span>
+        <h2 class="text-base font-black text-emerald-950 flex items-center gap-2">
+          <span class="bg-emerald-600 text-white w-7 h-7 rounded-xl inline-flex items-center justify-center text-xs font-black shadow-sm">3</span>
           匯出學習成果卡片 📸
         </h2>
       </div>
 
       <p class="text-slate-600 text-xs md:text-sm mb-4 font-medium">
-        完成「測試 2」驗證成功後，點擊下方「輸出圖檔」按鈕，即可將你的韓系風格學習成果儲存為圖片檔！
+        完成「測試 2」驗證成功後，點擊下方「輸出圖檔」按鈕，即可將你的校園風格學習成果儲存為圖片檔！
       </p>
 
       <!-- Printable Certificate/Card Container -->
       <div class="overflow-x-auto pb-2">
-        <div id="captureCard" class="bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 border-4 border-purple-400/60 p-6 rounded-3xl min-w-[500px] max-w-2xl mx-auto shadow-2xl relative text-white">
+        <div id="captureCard" class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 border-4 border-emerald-500/60 p-6 rounded-3xl min-w-[500px] max-w-2xl mx-auto shadow-2xl relative text-white">
           <!-- Card Header -->
           <div class="flex justify-between items-start border-b border-slate-700/80 pb-4 mb-4">
             <div>
-              <span class="text-xs font-black uppercase tracking-wider text-purple-300 bg-purple-900/80 px-3 py-0.5 rounded-full border border-purple-400/30">Python 學習成果卡 ✨</span>
+              <span class="text-xs font-black uppercase tracking-wider text-emerald-300 bg-emerald-900/80 px-3 py-0.5 rounded-full border border-emerald-500/30">Python 學習成果卡 🎓</span>
               <h3 class="text-xl font-black text-white mt-1.5 flex items-center gap-2">
                 🎬 題目：威秀影城票價計算 (MOP)
               </h3>
             </div>
             <div class="text-right">
-              <div class="text-xs font-black bg-rose-400 text-white px-3 py-1 rounded-xl inline-block shadow-sm">
+              <div class="text-xs font-black bg-amber-400 text-slate-900 px-3 py-1 rounded-xl inline-block shadow-sm">
                 學生：<span id="cardStudentId">F5A_01_P4</span>
               </div>
-              <div class="text-xs text-purple-200 mt-1 font-mono" id="cardDate">2026-10-29</div>
+              <div class="text-xs text-emerald-200 mt-1 font-mono" id="cardDate">2026-10-29</div>
             </div>
           </div>
 
@@ -438,21 +435,21 @@ add_combo = input("是否加購爆米花套餐? (是/否): ")
               </div>
               <div>
                 <span class="text-slate-400 text-xs font-bold">試算總金額：</span>
-                <p class="font-black text-purple-300 text-base">MOP <span id="cardTicketOutput">--</span></p>
+                <p class="font-black text-emerald-400 text-base">MOP <span id="cardTicketOutput">--</span></p>
               </div>
             </div>
 
             <div>
               <span class="text-xs font-bold text-slate-300 block mb-1">自訂 Python 程式碼 (OnlineGDB)：</span>
-              <pre id="cardCodeDisplay" class="bg-[#1e1e1e] text-purple-300 p-3.5 rounded-2xl text-xs font-mono-code overflow-x-auto min-h-[80px] border border-slate-700"># 尚未測試完成</pre>
+              <pre id="cardCodeDisplay" class="bg-[#1e1e1e] text-emerald-400 p-3.5 rounded-2xl text-xs font-mono-code overflow-x-auto min-h-[80px] border border-slate-700"># 尚未測試完成</pre>
             </div>
 
-            <div class="flex justify-between items-center bg-purple-950/60 border border-purple-400/30 p-3 rounded-2xl">
-              <span class="text-xs font-bold text-purple-300 flex items-center gap-2">
-                <i class="fa-solid fa-circle-check text-purple-400 text-sm"></i>
+            <div class="flex justify-between items-center bg-emerald-950/60 border border-emerald-500/30 p-3 rounded-2xl">
+              <span class="text-xs font-bold text-emerald-300 flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
                 程式測試狀態：<span id="cardStatus">等待測試 2</span>
               </span>
-              <span class="text-[10px] text-purple-300/80 font-mono">Verified by Pyodide Engine</span>
+              <span class="text-[10px] text-emerald-300/80 font-mono">Verified by Pyodide Engine</span>
             </div>
           </div>
         </div>
@@ -460,7 +457,7 @@ add_combo = input("是否加購爆米花套餐? (是/否): ")
 
       <!-- Export Action Button -->
       <div class="mt-6 text-center">
-        <button id="exportBtn" onclick="exportCardImage()" disabled class="bg-gradient-to-r from-purple-500 to-rose-400 hover:from-purple-600 hover:to-rose-500 border-b-4 border-purple-700 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 text-white font-black px-8 py-3 rounded-2xl transition inline-flex items-center gap-2 shadow-lg">
+        <button id="exportBtn" onclick="exportCardImage()" disabled class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 border-b-4 border-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 text-white font-black px-8 py-3 rounded-2xl transition inline-flex items-center gap-2 shadow-lg">
           <i class="fa-solid fa-file-image"></i>
           輸出圖檔 (<span id="exportFileName">F5A_01_P4.png</span>)
         </button>
@@ -471,11 +468,11 @@ add_combo = input("是否加購爆米花套餐? (是/否): ")
 
   <!-- Message Box Modal -->
   <div id="msgModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border-4 border-purple-100 text-center space-y-4">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border-4 border-emerald-100 text-center space-y-4">
       <div id="modalIcon" class="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl"></div>
       <h3 id="modalTitle" class="text-lg font-black text-slate-800"></h3>
       <p id="modalMessage" class="text-sm font-medium text-slate-600"></p>
-      <button onclick="closeModal()" class="w-full py-2.5 bg-purple-500 hover:bg-purple-600 text-white font-black rounded-2xl text-sm transition shadow-md border-b-4 border-purple-700">
+      <button onclick="closeModal()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl text-sm transition shadow-md border-b-4 border-emerald-800">
         確定
       </button>
     </div>
