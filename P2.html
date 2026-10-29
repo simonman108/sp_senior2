@@ -111,7 +111,7 @@
     <div class="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <i class="fa-solid fa-egg text-amber-400 text-2xl"></i>
-        <h1 class="text-xl md:text-2xl font-bold tracking-wide">雞蛋裝盒問題 - Online Python 挑戰賽</h1>
+        <h1 class="text-xl md:text-2xl font-bold tracking-wide">堂課2：雞蛋裝盒問題 - Online Python 挑戰賽</h1>
       </div>
       <span class="text-xs bg-slate-800 text-amber-400 border border-amber-400/30 font-mono px-3 py-1 rounded-full">OnlineGDB Style IDE</span>
     </div>
@@ -144,9 +144,9 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">選擇作業編號</label>
-          <select id="assignmentSelect" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-            <!-- Populated via JS -->
+          <label class="block text-xs font-semibold text-slate-600 mb-1">作業編號（已鎖定）</label>
+          <select id="assignmentSelect" disabled class="w-full p-2.5 bg-slate-100 text-slate-500 border border-slate-300 rounded-lg text-sm cursor-not-allowed font-bold">
+            <!-- Populated via JS (Locked to P2) -->
           </select>
         </div>
       </div>
@@ -522,13 +522,11 @@ eggs = int(input("請輸入雞蛋數量: "))
     function populateAssignmentNumbers() {
       const select = document.getElementById('assignmentSelect');
       select.innerHTML = '';
-      for (let i = 1; i <= 10; i++) {
-        const val = `P${i}`;
-        const opt = document.createElement('option');
-        opt.value = val;
-        opt.textContent = `作業 ${val}`;
-        select.appendChild(opt);
-      }
+      const opt = document.createElement('option');
+      opt.value = 'P2';
+      opt.textContent = '作業 P2';
+      opt.selected = true;
+      select.appendChild(opt);
     }
 
     function getStudentId() {
